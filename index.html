@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+  <head>
+    <title>e.quinox | ekohub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="stylesheets/bootstrap.css" rel="stylesheet" media="screen">
+	<link rel="shortcut icon" href="favicon.ico">
+	<script type="text/javascript" src="//www.google.com/jsapi"></script>
+  	<script type="text/javascript">
+    	google.load('visualization', '1', {'packages':['annotatedtimeline', 'corechart']});
+    	function drawVisualization() {
+      		var results = {{ json_data|safe }};
+
+      		// 1.First Data table....
+      		var dataSet1 = new google.visualization.DataTable();
+      		// need to have a title for each individual line/curve
+      		// we plot in the graph
+      		dataSet1.addColumn('datetime', 'Date');
+      		dataSet1.addColumn('number', 'voltage');
+      		dataSet1.addColumn('number', 'current');
+
+      		// 2.Second Data Table 
+      		var dataSet2 = new google.visualization.DataTable();
+      		dataSet2.addColumn('number', 'voltage');
+      		dataSet2.addColumn('number', 'current');
+      
+
+      		for(var i = 0; i < results.length; i++){
+        		dataSet1.addRow([new Date(results[i].tdate), results[i].ac_current1,
+        		results[i].ac_current2] );
+        		dataSet2.addRow([results[i].ac_current1, results[i].ac_current2]);
+      		}
+      		dataSet2.sort(0);
+
+      		var annotatedtimeline = new google.visualization.AnnotatedTimeLine(
+          	document.getElementById('timeline'));
+      		annotatedtimeline.draw(dataSet1, {'displayAnnotations': true, 
+                                     'allowRedraw': false,
+                                     'displayRangeSelector': true,
+                                     'scaleType': 'allmaximized',
+                                     'displayZoomButtons': true,
+                                     'allValuesSuffix': 'V'
+                                   	}); 
+
+      
+      		var secondChart = new google.visualization.LineChart(document.getElementById('lineChart')); 
+
+
+      		secondChart.draw(dataSet2, {title: 'VI characteristic',
+                          	hAxis: {title: "Voltage(V)"},
+                          	vAxis: {title: "Current(mA)"},
+                          	pointSize: 5, 
+                          	colors: ['red','#004411']
+        	});
+
+    	}
+    	google.setOnLoadCallback(drawVisualization);
+  	</script> 
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="../../assets/js/html5shiv.js"></script>
+      <script src="../../assets/js/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+  <body>
+	<div id="topnav_wrap">
+        <div id="topnav">
+            <div class="moduletable">                                                      
+                <ul class="menu">
+                <li><a href="http://e.quinox.org/join" >Get Involved</a></li>
+                <li><a href="http://www.e.quinox.org/" >Main Site</a></li>
+				<li><a href="http://www.e.quinox.org/wiki" >Wiki</a></li>
+				<li><a href="https://github.com/equinoxorg/Datalogging_2012-2013" ><img src="images/socialicon/github.png" alt="Twitter" /></a></li>
+                <li><a href="http://twitter.com/equinoximperial" ><img src="images/socialicon/twitter.png" alt="Twitter" /></a></li>
+                <li><a href="http://facebook.com/equinoximperial" ><img src="images/socialicon/facebook.png" alt="Facebook" /></a></li>
+                <li><a href="http://www.flickr.com/equinoximperial" ><img src="images/socialicon/flickr.png" alt="Flickr" /></a></li>
+                <li><a href="http://www.youtube.com/equinoxvloggers" ><img src="images/socialicon/youtube.png" alt="Youtube" /></a></li></ul>
+			</div>									
+        </div>
+    </div>
+
+												
+    <nav class="navbar navbar-inverse" role="navigation">
+	
+		<div class="navbar-width">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	  <div class="navbar-header">
+		<a class="navbar-brand" href="http://e.quinox.org"><img src="images/logo.png"></a>
+		<a class="navbar-brand"><img class="logohub" src="images/logo_hub.png"></a>
+	  </div>
+
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse navbar-ex1-collapse">
+		<ul class="nav navbar-nav navbar-right">
+		  <li><a href="index.htm">Home</a></li>
+		  <li><a href="pages/downloads.htm">Downloads</a></li>
+		  <li><a href="pages/resources.htm">Technical Resources</a></li>
+		  <li><a href="pages/contact.htm">Contact</a></li>
+		</ul>
+		</div>
+	  </div><!-- /.navbar-collapse -->
+	</nav>
+	
+	<div class="container">
+	
+		<h1>ekoHUB: Energy Kiosk Observer</h1> </br>
+		
+		<div id="intro">
+		div id: intro </br>
+		Here we will have some information about the div (block) on the right which will display a graph
+		</div>
+		
+		<!--<div id="maingraph">
+		div id: maingraph </br>
+		This is a container which will house the graph chosen by the user
+		</div> -->
+		<div id="maingraph">
+    		<div id="timeline" title="Voltage" style="width: 650px; height: 500px;"></div>
+    		<!--<div id="graph title" style="font-size:15px; text-decoration:underline; position:length;"><br>
+        		Charge controller current & voltage
+    		</div> -->
+  		</div>
+		
+		<div id="boxes">
+			<div id="b1">
+			div id: b1 </br>
+			b1, b2 and b3 will hold 3 other graphs and when clicked will go to another page with a similar layout but the graph in the maingrpah container will change.
+			</div>
+			
+			<div id="b2">
+			div id: b2
+			</div>
+			
+			<div id="b3">
+			div id: b3
+			</div>
+		</div>
+		
+		<div id="footer">
+			EkoHUB: Energy kiosk Observer. All rights reserved. 
+		</div>
+	
+	</div>
+	
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="//code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
+{% endautoescape %}
