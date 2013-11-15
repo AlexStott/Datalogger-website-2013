@@ -46,7 +46,7 @@ def serialize(model):
 class MainPage(webapp2.RequestHandler):
 
   def get(self):
-    self.response.out.write("Welcome to the webpage of e.quinox's second datalogger.<br/>")
+    #self.response.out.write("Welcome to the webpage of e.quinox's second datalogger.<br/>")
     #self.response.out.write("Unfortunately the page is still undergoing development...")
 
     i = 0
